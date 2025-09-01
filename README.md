@@ -21,9 +21,9 @@ CUSTOM_SEARCH_ENGINE_ID=あなたのカスタム検索エンジンID
 3. 入力ファイル（例: `example/input.txt`）を用意し、1行ごとに検索キーワードを記述します。
 
 例:
-```
-株式会社コンファクトリー
-株式会社サンプル
+```plaintext
+google
+github
 ```
 
 4. 実行例
