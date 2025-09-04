@@ -67,11 +67,13 @@ python get_top_site.py example/input.txt -o example/output.txt
 株式会社テスト|https://test.com
 ```
 
+
 ### 実行例
 ```
-python get_contact_link.py exmple/output.txt > output_with_contact.txt
+python get_contact_link.py example/output.txt -o output_with_contact.txt
 ```
 
+- 標準出力と `-o` で指定したファイルの両方に結果が出力されます。
 - 出力形式は `会社名|元URL|問い合わせページURL` です。
 - 問い合わせページが見つからない場合は `No contact page found` となります。
 

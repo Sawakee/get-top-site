@@ -68,19 +68,44 @@ def get_contact_url(url):
         #     print(link)
         return links[0] if links[0].startswith('http') else url + links[0]
 
-def main():
-    # load csv which path is passed as first argument
-    if len(sys.argv) < 2:
-        print("Usage: python script.py <csv_file>")
-        sys.exit(1)
-    csv_file = sys.argv[1]
-    with open(csv_file, "r", encoding="utf-8") as f:
-        for line in f:
-            parts = line.strip().split('|')
-            company, url = parts[0], parts[1]
 
-            contact_url = get_contact_url(url)
-            print(f"{company}|{url}|{contact_url if contact_url else 'No contact page found'}")
+def print_usage_and_exit():
+    print("Usage: python get_contact_link.py <input_file> [-o output_file]")
+    sys.exit(1)
+
+def process_line(line, out_fp=None):
+    parts = line.strip().split('|')
+    if len(parts) < 2:
+        return
+    company, url = parts[0].strip(), parts[1].strip()
+    contact_url = get_contact_url(url)
+    result = f"{company}|{url}|{contact_url if contact_url else 'No contact page found'}"
+    print(result)
+    if out_fp:
+        print(result, file=out_fp)
+
+def main():
+    if len(sys.argv) < 2:
+        print_usage_and_exit()
+
+    input_file = sys.argv[1]
+    output_file = None
+    if '-o' in sys.argv:
+        o_idx = sys.argv.index('-o')
+        if o_idx + 1 < len(sys.argv):
+            output_file = sys.argv[o_idx + 1]
+        else:
+            print("'-o' specified but no output file given.")
+            sys.exit(1)
+
+    out_fp = open(output_file, 'w', encoding='utf-8') if output_file else None
+    try:
+        with open(input_file, "r", encoding="utf-8") as f:
+            for line in f:
+                process_line(line, out_fp)
+    finally:
+        if out_fp:
+            out_fp.close()
 
 if __name__ == "__main__":
     main()
